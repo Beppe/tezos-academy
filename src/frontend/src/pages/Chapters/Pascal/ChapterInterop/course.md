@@ -34,13 +34,23 @@ In chapters 28 to 30,  we will see in detail the Financial Application standard 
 
 <!-- prettier-ignore -->For example, if a third-party contract (called *Caller* contract) wants to interact with a FA2 token contract (called *token* contract), it would use the entrypoint *Transfer* which expects parameters with a right combed representation of Ligo records. So, when the *Caller* contract sends a transaction to the *token* contract, it must transform parameters of the called entrypoint into the expected representation.  
 
-<!-- prettier-ignore -->The snippet of code below is part of the standard FA2 interface, and defines transfer parameters using *michelson\_pair\_right\_comb* function for specifying the Michelson representation used by the *Transfer* entrypoint.
+<!-- prettier-ignore -->The snippet of code below is part of the standard FA2 interface, and defines transfer parameters using *[@layout:comb]* annotation for specifying the Michelson representation used by the *Transfer* entrypoint.
 
 ```
-type transferMichelson = michelson_pair_right_comb(transferAuxiliary);
-type transferParameter = list(transferMichelson);
-type parameter = 
-| Transfer(transferParameter)
+type atomic_trans is [@layout:comb] record [
+   to_      : address;
+   token_id : nat;
+]
+
+type transfer_from is record [
+   from_ : address;
+   tx    : list(atomic_trans);
+]
+
+type transfer is list(transfer_from)
+
+type parameter is [@layout:comb] 
+| Transfer of transfer
 ```
 
 We will see in detail the Financial Application standard in chapters 28 to 30.

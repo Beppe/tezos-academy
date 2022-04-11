@@ -18,6 +18,6 @@ let action_B = ([input_string, store]: [string, storage]): return_ =>
 
 let main = ([action, store]: [parameter, storage]): return_ =>
   match(action, {
-    Action_A: (input_string: string) => action_A([input_string, store]),
-    Action_B: (input_string: string) => action_B([input_string, store])
+    Action_A: (input_string: string) => action_A(input_string, store),
+    Action_B: (input_string: string) => action_B(input_string, store)
   });
